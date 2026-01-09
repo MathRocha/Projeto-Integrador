@@ -12,7 +12,7 @@ export default function Header() {
           <Link to="/">Home</Link>
         </li>
         <li>
-          <Link to="#">Quem somos</Link>
+          <Link to="/quem-somos">Quem somos</Link>
         </li>
         <li>
           <button className="bg-secondary px-8 py-2 rounded-md transition-all hover:bg-orange-600">Entrar</button>

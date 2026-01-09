@@ -6,7 +6,7 @@ import { AiFillCar, AiOutlineGift, AiOutlineSync } from "react-icons/ai";
 import { FaTools } from "react-icons/fa";
 import { IoFastFoodOutline, IoSearch } from "react-icons/io5";
 import { Carousel } from "react-responsive-carousel";
-import carousel1 from "../../assets/Marca_X.png";
+import carousel1 from "../../assets/image1.jpg";
 import { useNavigate } from "react-router-dom";
 
 const itemsCategory = [

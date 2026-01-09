@@ -1,6 +1,6 @@
 import { Carousel } from "react-responsive-carousel";
 import UserTemplate from "../../templates/user-template";
-import carousel1 from "../../assets/Marca_X.png";
+import carousel1 from "../../assets/product.png";
 
 export default function Details() {
   return (
