@@ -11,6 +11,7 @@ import Register from "./pages/register";
 import Dashboard from "./pages/dashboard";
 import UserProducts from "./pages/user-products";
 import FormProduct from "./pages/form-product";
+import FaleConosco from "./pages/fale-conosco";
 
 export default function App() {
   const router = createBrowserRouter([
@@ -24,6 +25,7 @@ export default function App() {
     { path: "/dashboard", element: <Dashboard /> },
     { path: "/my-products", element: <UserProducts /> },
     { path: "/form-product", element: <FormProduct /> },
+    { path: "/fale-conosco", element: <FaleConosco /> },
     { path: "*", element: <NotFound /> },
   ]);
 

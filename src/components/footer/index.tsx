@@ -1,9 +1,14 @@
 import { BsFacebook, BsLinkedin } from "react-icons/bs";
+import { Link } from "react-router-dom";
 
 export default function Footer() {
   return (
     <footer className="bg-primary text-white p-10">
-      <h2 className="text=[22px] font-bold mb-5">Unybay</h2>
+      <div className="flex justify-between">
+        <h2 className="text=[22px] font-bold mb-5">Unybay</h2>
+
+        <Link to="/fale-conosco">Fale Conosco</Link>
+      </div>
 
       <p className="text-center">
         Unyleya Educacional | Todos os direitos reservados
