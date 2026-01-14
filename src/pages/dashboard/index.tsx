@@ -78,14 +78,14 @@ export default function Dashboard() {
 
       <h2 className="mt-[50px]">Items recentes</h2>
       <div className="flex flex-wrap">
+        {/* <CardProduct />
         <CardProduct />
         <CardProduct />
         <CardProduct />
         <CardProduct />
         <CardProduct />
         <CardProduct />
-        <CardProduct />
-        <CardProduct />
+        <CardProduct /> */}
       </div>
       <p className="mt-4">Ver mais</p>
 
@@ -109,14 +109,14 @@ export default function Dashboard() {
 
       <h2 className="mt-[50px]">Anúncios</h2>
       <div className="flex flex-wrap">
+        {/* <CardProduct />
         <CardProduct />
         <CardProduct />
         <CardProduct />
         <CardProduct />
         <CardProduct />
         <CardProduct />
-        <CardProduct />
-        <CardProduct />
+        <CardProduct /> */}
       </div>
       <p className="mt-4">Ver mais</p>
     </AdminTemplate>

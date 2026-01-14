@@ -1,6 +1,6 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Home from "./pages/home";
-import ListProducts from "./pages/list-products";
+import ListRecentsProducts from "./pages/list-recents-products";
 import Details from "./pages/details";
 import SearchProducts from "./pages/search-result";
 import NotFound from "./pages/not-found";
@@ -12,13 +12,15 @@ import Dashboard from "./pages/dashboard";
 import UserProducts from "./pages/user-products";
 import FormProduct from "./pages/form-product";
 import FaleConosco from "./pages/fale-conosco";
+import ListAllProducts from "./pages/list-all-products";
 
 export default function App() {
   const router = createBrowserRouter([
     { path: "/", element: <Home /> },
-    { path: "/products", element: <ListProducts /> },
-    { path: "/products/details", element: <Details /> },
-    { path: "/products/search", element: <SearchProducts /> },
+    { path: "/all-recents-products", element: <ListRecentsProducts /> },
+    { path: "/all-products", element: <ListAllProducts /> },
+    { path: "/products/details/:id", element: <Details /> },
+    { path: "/products/search/:product", element: <SearchProducts /> },
     { path: "/quem-somos", element: <QuemSomos /> },
     { path: "/login", element: <Login /> },
     { path: "/register", element: <Register /> },

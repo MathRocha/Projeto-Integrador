@@ -1,38 +1,35 @@
-import { useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
 import CardProduct from "../../components/card-product";
 import UserTemplate from "../../templates/user-template";
-import { getApiProductsByName } from "./service";
-import { useEffect, useState } from "react";
+import { getApiAllProductsRecents } from "./services";
 import type { Product } from "./types";
 import ListLoading from "../../components/list-loading";
 
-export default function SearchProducts() {
-  const params = useParams();
-  const nameProduct = params?.product;
-
+export default function ListRecentsProducts() {
   const [allProducts, setAllProducts] = useState<Product[]>([]);
-  const [isLoadingProducts, setIsLoadingProducts] = useState(false);
+  const [isLoadingRecents, setIsLoadingRecents] = useState(false);
 
-  async function getProductsByName() {
-    setIsLoadingProducts(true);
+  async function getAllRecentsProducts() {
+    setIsLoadingRecents(true);
     try {
-      const response = await getApiProductsByName(nameProduct ?? "");
+      const response = await getApiAllProductsRecents();
+
       setAllProducts(response.data);
     } catch (error) {
-      alert("Erro ao buscar produtos por nome");
+      alert("Houve um erro ao buscar todos os produtos recentes");
     }
-    setIsLoadingProducts(false);
+    setIsLoadingRecents(false);
   }
 
   useEffect(() => {
-    getProductsByName();
+    getAllRecentsProducts();
   }, []);
 
   return (
     <UserTemplate>
-      <h1>Resultado da busca</h1>
+      <h1>Items Recents</h1>
 
-      {isLoadingProducts && <ListLoading />}
+      {isLoadingRecents && <ListLoading />}
       <div className="grid grid-4 lg:grid-cols-5 md:grid-cols-3 sm:grid-cols-2">
         {allProducts.map((product) => (
           <CardProduct
@@ -45,8 +42,6 @@ export default function SearchProducts() {
           />
         ))}
       </div>
-
-      <p>Total: {allProducts.length} {allProducts.length > 1 ? "itens" : 'item'}</p>
     </UserTemplate>
   );
 }
