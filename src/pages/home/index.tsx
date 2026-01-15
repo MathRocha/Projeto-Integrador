@@ -12,6 +12,7 @@ import { getApiRecentesProducts, getApiRecommendedsProducts } from "./services";
 import { useEffect, useState } from "react";
 import type { Product } from "./types";
 import ListLoading from "../../components/list-loading";
+import { Bounce, toast, ToastContainer } from "react-toastify";
 
 const itemsCategory = [
   {
@@ -68,7 +69,17 @@ export default function Home() {
       const response = await getApiRecentesProducts();
       setRecentsProducts(response.data);
     } catch (error) {
-      alert("Houve um erro ao buscar produtos recentes");
+      toast.error("Houve um erro ao buscar produtos recentes", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
     }
     setIsLoadingRecentsProducts(false);
   }
@@ -79,7 +90,17 @@ export default function Home() {
       const response = await getApiRecommendedsProducts();
       setRecommededsProducts(response.data);
     } catch (error) {
-      alert("Houve um erro ao buscar produtos recomendados");
+      toast.error("Houve um erro ao buscar produtos recomendados", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
     }
     setIsLoadingRecommededsProducts(false);
   }
@@ -94,6 +115,8 @@ export default function Home() {
 
   return (
     <UserTemplate>
+      <ToastContainer />
+
       <div className="max-w-[70%] self-center">
         <Carousel showThumbs={false}>
           <div>

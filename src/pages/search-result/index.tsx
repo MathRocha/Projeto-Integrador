@@ -5,6 +5,7 @@ import { getApiProductsByName } from "./service";
 import { useEffect, useState } from "react";
 import type { Product } from "./types";
 import ListLoading from "../../components/list-loading";
+import { Bounce, toast, ToastContainer } from "react-toastify";
 
 export default function SearchProducts() {
   const params = useParams();
@@ -19,7 +20,17 @@ export default function SearchProducts() {
       const response = await getApiProductsByName(nameProduct ?? "");
       setAllProducts(response.data);
     } catch (error) {
-      alert("Erro ao buscar produtos por nome");
+      toast.error("Erro ao buscar produtos por nome", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
     }
     setIsLoadingProducts(false);
   }
@@ -30,6 +41,8 @@ export default function SearchProducts() {
 
   return (
     <UserTemplate>
+      <ToastContainer />
+
       <h1>Resultado da busca</h1>
 
       {isLoadingProducts && <ListLoading />}
@@ -46,7 +59,9 @@ export default function SearchProducts() {
         ))}
       </div>
 
-      <p>Total: {allProducts.length} {allProducts.length > 1 ? "itens" : 'item'}</p>
+      <p>
+        Total: {allProducts.length} {allProducts.length > 1 ? "itens" : "item"}
+      </p>
     </UserTemplate>
   );
 }

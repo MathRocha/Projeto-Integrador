@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import type { Product } from "./types";
 import { getApiDetailsProduct } from "./service";
+import { Bounce, toast, ToastContainer } from "react-toastify";
 
 export default function Details() {
   const params = useParams();
@@ -16,7 +17,17 @@ export default function Details() {
       const response = await getApiDetailsProduct(id ?? "");
       setProduct(response.data);
     } catch (error) {
-      alert("Erro ao buscar dados do produto");
+      toast.error("Erro ao buscar dados do produto", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
     }
   }
 
@@ -26,6 +37,8 @@ export default function Details() {
 
   return (
     <UserTemplate>
+      <ToastContainer />
+
       <p className="text-[30px]">{product.name}</p>
 
       <div className="flex mt-10 gap-10 justify-center">

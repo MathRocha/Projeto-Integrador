@@ -4,6 +4,7 @@ import UserTemplate from "../../templates/user-template";
 import { getApiAllProductsRecents } from "./services";
 import type { Product } from "./types";
 import ListLoading from "../../components/list-loading";
+import { Bounce, toast, ToastContainer } from "react-toastify";
 
 export default function ListRecentsProducts() {
   const [allProducts, setAllProducts] = useState<Product[]>([]);
@@ -16,7 +17,17 @@ export default function ListRecentsProducts() {
 
       setAllProducts(response.data);
     } catch (error) {
-      alert("Houve um erro ao buscar todos os produtos recentes");
+      toast.error("Houve um erro ao buscar todos os produtos recentes", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
     }
     setIsLoadingRecents(false);
   }
@@ -27,6 +38,8 @@ export default function ListRecentsProducts() {
 
   return (
     <UserTemplate>
+      <ToastContainer />
+
       <h1>Items Recents</h1>
 
       {isLoadingRecents && <ListLoading />}
