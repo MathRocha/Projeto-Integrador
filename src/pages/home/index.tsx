@@ -13,6 +13,7 @@ import { useEffect, useState } from "react";
 import type { Product } from "./types";
 import ListLoading from "../../components/list-loading";
 import { Bounce, toast, ToastContainer } from "react-toastify";
+import { useAuthSessionStore } from "../../hooks/use-auth-session";
 
 const itemsCategory = [
   {
@@ -54,7 +55,7 @@ const itemsCategory = [
 
 export default function Home() {
   const navigate = useNavigate();
-
+  const { token } = useAuthSessionStore();
   const [recentsProducts, setRecentsProducts] = useState<Product[]>([]);
   const [recommededsProducts, setRecommededsProducts] = useState<Product[]>([]);
   const [isLoadingRecentsProducts, setIsLoadingRecentsProducts] =
@@ -111,6 +112,12 @@ export default function Home() {
 
   useEffect(() => {
     getRecommendedsProducts();
+  }, []);
+
+  useEffect(() => {
+    if (token) {
+      navigate("/dashboard");
+    }
   }, []);
 
   return (

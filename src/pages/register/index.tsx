@@ -3,15 +3,9 @@ import { useForm } from "react-hook-form";
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useNavigate } from "react-router-dom";
-
-type RegisterForm = {
-  name: string;
-  email: string;
-  phone: string;
-  city: string;
-  state: string;
-  password: string;
-};
+import type { RegisterForm } from "./types";
+import { registerUser } from "./service";
+import { Bounce, toast, ToastContainer } from "react-toastify";
 
 const schemaValidation = Yup.object().shape({
   name: Yup.string().required("O campo é obrigatório"),
@@ -32,15 +26,44 @@ export default function Register() {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<RegisterForm>({ resolver: yupResolver(schemaValidation) });
 
-  function createUser(values: RegisterForm) {
-    console.log(values);
+  async function createUser(values: RegisterForm) {
+    try {
+      await registerUser(values);
+      reset();
+      toast.success("Usuário criado com sucesso!", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
+    } catch (error) {
+      toast.error("Erro ao cadastrar usuário", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
+    }
   }
 
   return (
     <AuthTemplate>
+      <ToastContainer />
+
       <form
         className="bg-gray-400 p-5 rounded-lg w-[400px] self-center"
         onSubmit={handleSubmit(createUser)}
@@ -118,15 +141,15 @@ export default function Register() {
           type="submit"
           className="mt-4 bg-primary w-full h-[40px] text-white"
         >
-          Entrar
+          Cadastrar
         </button>
 
         <div className="flex justify-center items-center">
           <button
             className="mt-4 self-center"
-            onClick={() => navigate("/register")}
+            onClick={() => navigate("/login")}
           >
-            Cadastre-se
+            Entrar
           </button>
         </div>
       </form>

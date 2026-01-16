@@ -1,7 +1,33 @@
 import { Link, useNavigate } from "react-router-dom";
+import Modal from "react-modal";
+import { useState } from "react";
+import { useAuthSessionStore } from "../../hooks/use-auth-session";
+
+const customStyles = {
+  overlay: {
+    backgroundColor: "rgba(0,0,0,0.7)",
+  },
+  content: {
+    top: "50%",
+    left: "50%",
+    right: "auto",
+    bottom: "auto",
+    marginRight: "-50%",
+    transform: "translate(-50%, -50%)",
+  },
+};
+
+Modal.setAppElement("#root");
 
 export default function HeaderAdmin() {
   const navigate = useNavigate();
+  const { clearToken } = useAuthSessionStore();
+  const [modalIsOpen, setIsOpen] = useState(false);
+
+  async function logout() {
+    clearToken();
+    navigate("/");
+  }
 
   return (
     <header className="bg-primary flex justify-between items-center p-2">
@@ -17,17 +43,42 @@ export default function HeaderAdmin() {
           <Link to="/quem-somos">Quem somos</Link>
         </li>
         <li>
-          <button>Sair</button>
+          <button onClick={() => setIsOpen(true)}>Sair</button>
         </li>
         <li>
           <button
-            onClick={() => navigate("/login")}
+            onClick={() => navigate("/my-products")}
             className="bg-white text-secondary px-8 py-2 rounded-md"
           >
             Anunciar
           </button>
         </li>
       </ul>
+
+      <Modal
+        isOpen={modalIsOpen}
+        onRequestClose={() => setIsOpen(false)}
+        style={customStyles}
+        contentLabel="Example Modal"
+      >
+        <h1 className="text-[20px] font-bold mb-2">Confirmar logout</h1>
+        <p>Deseja realmente sair?</p>
+
+        <div className="flex justify-center gap-4 mt-4">
+          <button
+            onClick={logout}
+            className="bg-primary text-white px-8 py-2 rounded-lg"
+          >
+            Sim
+          </button>
+          <button
+            className="bg-white text-primary border border-primary px-8 py-2 rounded-lg"
+            onClick={() => setIsOpen(false)}
+          >
+            Não
+          </button>
+        </div>
+      </Modal>
     </header>
   );
 }

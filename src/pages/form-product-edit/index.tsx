@@ -4,11 +4,12 @@ import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import ReactQuill from "react-quill-new";
 import "react-quill-new/dist/quill.snow.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import type { FormProduct } from "./types";
-import { saveApiProduct } from "./service";
+import { editApiProduct } from "./service";
 import { useAuthSessionStore } from "../../hooks/use-auth-session";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { getApiDetailsProduct } from "../details/service";
 
 const schemaValidation = Yup.object().shape({
   name: Yup.string().required("O campo é obrigatório"),
@@ -19,17 +20,48 @@ const schemaValidation = Yup.object().shape({
   url2: Yup.string().required("O campo é obrigatório"),
 });
 
-export default function FormProduct() {
+export default function FormProductEdit() {
+  const params = useParams();
+  const id = params?.id || " ";
+
   const [value, setValue] = useState("");
+  const [product, setProduct] = useState({
+    price: 0,
+    category: "",
+    description: "",
+    manufacturer: "",
+    name: "",
+    url1: "",
+    url2: "",
+  });
   const { token } = useAuthSessionStore();
   const navigate = useNavigate();
 
+  async function getProductById() {
+    try {
+      const response = await getApiDetailsProduct(id);
+      const productResponse = response.data;
+      setProduct({
+        price: productResponse.price,
+        category: productResponse.category,
+        manufacturer: productResponse.manufacturer,
+        name: productResponse.name,
+        url1: productResponse.url1,
+        url2: productResponse.url2,
+        description: "",
+      });
+      setValue(productResponse.description);
+    } catch (error) {
+      alert("Erro ao buscar produto");
+    }
+  }
+
   async function saveProduct(values: FormProduct) {
     try {
-      await saveApiProduct({ ...values, description: value }, token);
-      alert("Produto cadastrado com sucesso");
+      await editApiProduct({ ...values, description: value }, token, id);
+      alert("Produto editado com sucesso");
     } catch (error) {
-      alert("Erro ao cadastrar produto");
+      alert("Erro ao editar produto");
     }
   }
 
@@ -37,7 +69,15 @@ export default function FormProduct() {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<FormProduct>({ resolver: yupResolver(schemaValidation) });
+  } = useForm<FormProduct>({
+    resolver: yupResolver(schemaValidation),
+    defaultValues: product,
+    values: product,
+  });
+
+  useEffect(() => {
+    getProductById();
+  }, []);
 
   return (
     <AdminTemplate>

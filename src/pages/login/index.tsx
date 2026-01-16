@@ -3,11 +3,10 @@ import { useForm } from "react-hook-form";
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useNavigate } from "react-router-dom";
-
-type LoginForm = {
-  email: string;
-  password: string;
-};
+import type { LoginForm } from "./types";
+import { Bounce, toast, ToastContainer } from "react-toastify";
+import { auth } from "./service";
+import { useAuthSessionStore } from "../../hooks/use-auth-session";
 
 const schemaValidation = Yup.object().shape({
   email: Yup.string()
@@ -19,6 +18,7 @@ const schemaValidation = Yup.object().shape({
 });
 
 export default function Login() {
+  const { setToken } = useAuthSessionStore();
   const navigate = useNavigate();
 
   const {
@@ -27,12 +27,30 @@ export default function Login() {
     formState: { errors },
   } = useForm<LoginForm>({ resolver: yupResolver(schemaValidation) });
 
-  function logar(values: LoginForm) {
-    console.log(values);
+  async function logar(values: LoginForm) {
+    try {
+      const response = await auth(values);
+      setToken(response.data?.token);
+      navigate("/dashboard");
+    } catch (error) {
+      toast.error("Erro ao logar, tente novamente", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
+    }
   }
 
   return (
     <AuthTemplate>
+      <ToastContainer />
+
       <form
         className="bg-gray-400 p-5 rounded-lg w-[400px] self-center"
         onSubmit={handleSubmit(logar)}

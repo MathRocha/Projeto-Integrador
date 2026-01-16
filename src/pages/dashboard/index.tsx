@@ -6,7 +6,12 @@ import { FaTools } from "react-icons/fa";
 import { IoFastFoodOutline, IoSearch } from "react-icons/io5";
 import { Carousel } from "react-responsive-carousel";
 import carousel1 from "../../assets/image1.jpg";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { getApiRecentesProducts, getApiRecommendedsProducts } from "./services";
+import { useEffect, useState } from "react";
+import type { Product } from "./types";
+import ListLoading from "../../components/list-loading";
+import { Bounce, toast, ToastContainer } from "react-toastify";
 import AdminTemplate from "../../templates/admin-template";
 
 const itemsCategory = [
@@ -50,8 +55,68 @@ const itemsCategory = [
 export default function Dashboard() {
   const navigate = useNavigate();
 
+  const [recentsProducts, setRecentsProducts] = useState<Product[]>([]);
+  const [recommededsProducts, setRecommededsProducts] = useState<Product[]>([]);
+  const [isLoadingRecentsProducts, setIsLoadingRecentsProducts] =
+    useState(false);
+  const [isLoadingRecommededsProducts, setIsLoadingRecommededsProducts] =
+    useState(false);
+  const [inputSearch, setInputSearch] = useState("");
+
+  async function getRecentesProducts() {
+    setIsLoadingRecentsProducts(true);
+    try {
+      const response = await getApiRecentesProducts();
+      setRecentsProducts(response.data);
+    } catch (error) {
+      toast.error("Houve um erro ao buscar produtos recentes", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
+    }
+    setIsLoadingRecentsProducts(false);
+  }
+
+  async function getRecommendedsProducts() {
+    setIsLoadingRecommededsProducts(true);
+    try {
+      const response = await getApiRecommendedsProducts();
+      setRecommededsProducts(response.data);
+    } catch (error) {
+      toast.error("Houve um erro ao buscar produtos recomendados", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
+    }
+    setIsLoadingRecommededsProducts(false);
+  }
+
+  useEffect(() => {
+    getRecentesProducts();
+  }, []);
+
+  useEffect(() => {
+    getRecommendedsProducts();
+  }, []);
+
   return (
     <AdminTemplate>
+      <ToastContainer />
+
       <div className="max-w-[70%] self-center">
         <Carousel showThumbs={false}>
           <div>
@@ -69,25 +134,34 @@ export default function Dashboard() {
           <input
             className="flex-1 h-full p-3"
             placeholder="Estou buscando por..."
+            onChange={(event) => setInputSearch(event.target.value)}
           />
-          <button onClick={() => navigate("/products/search")} className="px-4">
+          <button
+            onClick={() => navigate(`/products/search/${inputSearch}`)}
+            className="px-4"
+          >
             <IoSearch size={30} />
           </button>
         </div>
       </div>
 
       <h2 className="mt-[50px]">Items recentes</h2>
+      {isLoadingRecentsProducts && <ListLoading />}
       <div className="flex flex-wrap">
-        {/* <CardProduct />
-        <CardProduct />
-        <CardProduct />
-        <CardProduct />
-        <CardProduct />
-        <CardProduct />
-        <CardProduct />
-        <CardProduct /> */}
+        {recentsProducts.map((product) => (
+          <CardProduct
+            key={product._id}
+            id={product._id}
+            name={product.name}
+            img={product.url1}
+            manufacturer={product.manufacturer}
+            price={product.price}
+          />
+        ))}
       </div>
-      <p className="mt-4">Ver mais</p>
+      <Link to="/all-recents-products">
+        <p className="mt-4">Ver todos os produtos recentes</p>
+      </Link>
 
       <div className="bg-primary p-10 rounded-lg mt-[50px]">
         <h2 className="text-white text-[20px] mb-5">Categorias</h2>
@@ -108,17 +182,22 @@ export default function Dashboard() {
       </div>
 
       <h2 className="mt-[50px]">Anúncios</h2>
+      {isLoadingRecommededsProducts && <ListLoading />}
       <div className="flex flex-wrap">
-        {/* <CardProduct />
-        <CardProduct />
-        <CardProduct />
-        <CardProduct />
-        <CardProduct />
-        <CardProduct />
-        <CardProduct />
-        <CardProduct /> */}
+        {recommededsProducts.map((product) => (
+          <CardProduct
+            key={product._id}
+            id={product._id}
+            name={product.name}
+            img={product.url1}
+            manufacturer={product.manufacturer}
+            price={product.price}
+          />
+        ))}
       </div>
-      <p className="mt-4">Ver mais</p>
+      <Link to="/all-products">
+        <p className="mt-4">Ver todos os produtos</p>
+      </Link>
     </AdminTemplate>
   );
 }
