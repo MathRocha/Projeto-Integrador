@@ -25,7 +25,7 @@ export default function FaleConosco() {
     formState: { errors },
   } = useForm<FaleConoscoForm>({ resolver: yupResolver(schemaValidation) });
 
-  function sendMessage(values: FaleConoscoForm) {
+  function sendMessage() {
     toast.success("Mensagem enviada com sucesso!", {
       position: "top-right",
       autoClose: 5000,
