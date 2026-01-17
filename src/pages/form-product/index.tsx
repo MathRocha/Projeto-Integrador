@@ -48,7 +48,7 @@ export default function FormProduct() {
           <div className="flex-1">
             <input
               {...register("name")}
-              className="flex-1 border-2 h-[40px] px-2 rounded-md"
+              className="w-full border-2 h-[40px] px-2 rounded-md"
               placeholder="Nome do Produto"
             />
             {errors.name && (
