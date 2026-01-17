@@ -163,9 +163,9 @@ export default function Dashboard() {
         <p className="mt-4">Ver todos os produtos recentes</p>
       </Link>
 
-      <div className="bg-primary p-10 rounded-lg mt-[50px]">
+      <div className="bg-primary p-10 rounded-lg mt-[50px] w-100">
         <h2 className="text-white text-[20px] mb-5">Categorias</h2>
-        <div className="flex justify-between px-[10%]">
+        <div className="flex flex-wrap justify-between px-[10%]">
           {itemsCategory.map((category) => (
             <button
               key={category.id}
