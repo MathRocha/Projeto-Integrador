@@ -116,7 +116,7 @@ export default function FormProductEdit() {
               {...register("category")}
               className="w-full border-2 h-[40px] px-2 rounded-md"
             >
-              <option disabled selected>
+              <option disabled selected value="">
                 Selecione uma opção
               </option>
               <option value="Jogos">Jogos</option>
