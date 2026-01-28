@@ -37,7 +37,7 @@ export default function UserProducts() {
         </button>
       </div>
 
-      <div className="grid grid-4 lg:grid-cols-6 md:grid-cols-3 sm:grid-cols-2">
+      <div className="grid grid-4 lg:grid-cols-6 md:grid-cols-3 sm:grid-cols-2 gap-[25px]">
         {myProducts.map((product) => (
           <CardProductAdmin
             key={product._id}

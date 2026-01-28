@@ -1,11 +1,14 @@
 import { useNavigate } from "react-router-dom";
 import type { CardProps } from "./types";
+import { motion } from "motion/react";
 
 export default function CardProduct(props: CardProps) {
   const navigate = useNavigate();
 
   return (
-    <button
+    <motion.button
+      whileHover={{ scale: 1.1 }}
+      whileTap={{ scale: 0.95 }}
       onClick={() => navigate(`/products/details/${props.id}`)}
       className="shadow-md w-[260px] rounded-md p-10 flex flex-col justify-center items-center"
     >
@@ -15,6 +18,6 @@ export default function CardProduct(props: CardProps) {
 
       <p className="w-full mt-3">{props.manufacturer}</p>
       <p className="w-full text-[25px]">R$ {props.price}</p>
-    </button>
+    </motion.button>
   );
 }

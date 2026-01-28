@@ -154,7 +154,7 @@ export default function Home() {
 
       <h2 className="mt-[50px]">Items recentes</h2>
       {isLoadingRecentsProducts && <ListLoading />}
-      <div className="flex flex-wrap">
+      <div className="flex flex-wrap gap-[25px]">
         {recentsProducts.map((product) => (
           <CardProduct
             key={product._id}
@@ -190,7 +190,7 @@ export default function Home() {
 
       <h2 className="mt-[50px]">Anúncios</h2>
       {isLoadingRecommededsProducts && <ListLoading />}
-      <div className="flex flex-wrap">
+      <div className="flex flex-wrap gap-[25px]">
         {recommededsProducts.map((product) => (
           <CardProduct
             key={product._id}

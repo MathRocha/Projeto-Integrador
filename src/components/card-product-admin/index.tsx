@@ -6,6 +6,7 @@ import type { CardProps } from "./types";
 import { removeApiProduct } from "./service";
 import { useAuthSessionStore } from "../../hooks/use-auth-session";
 import { getApiMyProducts } from "../../pages/user-products/service";
+import { motion } from "motion/react";
 
 const customStyles = {
   overlay: {
@@ -42,7 +43,11 @@ export default function CardProductAdmin(props: CardProps) {
 
   return (
     <div>
-      <div className="shadow-md rounded-md p-6 flex flex-col justify-center items-center">
+      <motion.div
+        whileHover={{ scale: 1.1 }}
+        whileTap={{ scale: 0.95 }}
+        className="shadow-md rounded-md p-6 flex flex-col justify-center items-center"
+      >
         <h1 className="text-center">{props.name}</h1>
 
         <img src={props.img} className="w-[100px]  mt-2" />
@@ -62,7 +67,7 @@ export default function CardProductAdmin(props: CardProps) {
             </button>
           </div>
         </div>
-      </div>
+      </motion.div>
 
       <Modal
         isOpen={modalIsOpen}
